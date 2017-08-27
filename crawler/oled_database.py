@@ -2,6 +2,7 @@ from database import Database
 import pymysql
 import unidecode
 import json
+
 class OledDatabase(Database) :
     def select_purchasers_from_eval_results(self) :
         sql = """select distinct PURCHASERS from EVAL_RESULTS"""

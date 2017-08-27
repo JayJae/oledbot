@@ -7,6 +7,9 @@ class OledCrawler(BaseCrawler) :
     key_word_dict = {'CSOT' : (1, 4), 'BOE' : (6, 11), 'Tianma' : (1, 3),
                      'Optoelectronics' : (5, 19), 'CEC' : (3, 8),
                      'Optronics' : (1, 1), 'Yungu' : (1, 3), 'Royole' : (1, 4)}
+    new_key_word_dict = {'CSOT' : (2, 3), 'BOE' : (2, 3), 'Tianma' : (2, 3),
+                     'Optoelectronics' : (2, 3), 'CEC' : (2, 3),
+                     'Optronics' : (2, 3), 'Yungu' : (2, 3), 'Royole' : (2, 3)}
     results_soup_list = []
     awards_soup_list = []
     result_link_list = []
@@ -16,6 +19,15 @@ class OledCrawler(BaseCrawler) :
 
     def __init__(self) :
         self.url = "http://www.chinabidding.com/en/info/search.htm"
+
+    def crawl_new_pages(self) :
+        for key, value in self.new_key_word_dict.items() :
+            self.search_oled_results(key, value[0])
+            self.search_oled_awards(key, value[1])
+            self.get_links_from_soup()
+            self.results_soup_list = []
+            self.awards_soup_list = []
+        return self.get_data_from_links()
 
     def crawl_pages(self) :
         for key, value in self.key_word_dict.items() :
