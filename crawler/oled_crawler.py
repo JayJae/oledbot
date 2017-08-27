@@ -6,7 +6,7 @@ import json
 class OledCrawler(BaseCrawler) :
     key_word_dict = {'CSOT' : (1, 4), 'BOE' : (6, 11), 'Tianma' : (1, 3),
                      'Optoelectronics' : (5, 19), 'CEC' : (3, 8),
-                     'Optronics' : (1, 1), 'Yungu' : (1, 3)}
+                     'Optronics' : (1, 1), 'Yungu' : (1, 3), 'Royole' : (1, 4)}
     results_soup_list = []
     awards_soup_list = []
     result_link_list = []
@@ -29,7 +29,7 @@ class OledCrawler(BaseCrawler) :
     def search_oled_results(self, key_word, last_page) :
         for page_num in range(1, last_page+1) :
             with requests.Session() as s:
-                res = s.post(self.url, data = {'fullText' : key_word, 'infoClassCodes' : 'e0907', 'currentPage' : str(page_num)})
+                res = s.post(self.url, data={'fullText' : key_word, 'infoClassCodes' : 'e0907', 'currentPage' : str(page_num)})
                 if res.status_code != 200 :
                     return False
                 else :
@@ -41,13 +41,14 @@ class OledCrawler(BaseCrawler) :
         for page_num in range(1, last_page+1) :
             print(page_num, last_page)
             with requests.Session() as s:
-                res = s.post(self.url, data = {'fullText' : key_word, 'infoClassCodes' : 'e0908', 'currentPage' : str(page_num)})
+                res = s.post(self.url, data={'fullText' : key_word, 'infoClassCodes' : 'e0908', 'currentPage' : str(page_num)})
                 if res.status_code != 200 :
                     print("FALSE!, status : %d" % res.ststus_code);
                     return False
                 else :
                     html = res.text
                     self.awards_soup_list.append(BeautifulSoup(html, 'lxml'))
+        print(self.awards_soup_list)
         return True
 
     def get_links_from_soup(self) :
@@ -64,13 +65,15 @@ class OledCrawler(BaseCrawler) :
                         break
                     self.result_link_list.append(str(result_title.get('href')))
             for awards_soup in self.awards_soup_list :
-                list_items = results_soup.find_all("li", class_="list-item")
+                list_items = awards_soup.find_all("li", class_="list-item")
                 for list_item in list_items :
                     award_title = list_item.find("a", class_="item-title-text")
                     award_time = list_item.find("span", class_="item-title-data").get_text().strip()#.split(":", 1)[1]
                     if award_time < "Time：2017-07-01" :
                         break
                     self.award_link_list.append(str(award_title.get('href')))
+
+                print(self.award_link_list)
             return True
 
 
