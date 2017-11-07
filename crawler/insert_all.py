@@ -6,7 +6,7 @@ award_data_list = []
 
 oledCrawler = OledCrawler()
 result_data_list, award_data_list = oledCrawler.crawl_pages()
-oledDB = OledDatabase("127.0.0.1", "root", "", "trading")
+oledDB = OledDatabase("127.0.0.1", "root", "gold2451", "OLED")
 oledDB.insert_eval_results(result_data_list)
 oledDB.insert_tender_awards(award_data_list)
 for result_data in result_data_list :

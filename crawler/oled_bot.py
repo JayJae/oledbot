@@ -9,8 +9,12 @@ class OledBot() :
 
     def get_users(self) :
         updates = self.bot.getUpdates()
+        """
         for update in updates :
+            print(update.message.chat.id)
             self.users.append(update.message.chat.id)
+        """
+        self.users = ['410160924', '169412234', '422922822']
 
     def send_message(self, msg) :
         for user in self.users :
